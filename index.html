@@ -6,16 +6,45 @@ window.addEventListener("error",function(e){var m=document.getElementById("main"
 const S={accounts:[],posts:[],page:'home',current:'default',editing:null};
 const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const fmt=n=>new Intl.NumberFormat('th-TH').format(Number(n)||0);
+// Set this to your newly deployed Apps Script Web App /exec URL.
+const GAS_WEB_APP_URL='PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE';
+const BRIDGE_ORIGIN='https://phoexiix.github.io';
+const bridgeChannel=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36)).replace(/-/g,'');
+const pending=new Map();
+let bridgeReady=false, bridgeFrame=null;
+function startBridge(){
+  if(bridgeFrame)return;
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(GAS_WEB_APP_URL)){
+    throw Error('กรุณาตั้งค่า GAS_WEB_APP_URL เป็นลิงก์ Web App /exec ใน index.html');
+  }
+  if(location.origin!==BRIDGE_ORIGIN)throw Error('ต้องเปิดเว็บไซต์ผ่าน '+BRIDGE_ORIGIN);
+  bridgeFrame=document.createElement('iframe');
+  bridgeFrame.style.cssText='position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none';
+  bridgeFrame.setAttribute('aria-hidden','true');
+  bridgeFrame.src=GAS_WEB_APP_URL+'?bridge=1&channel='+encodeURIComponent(bridgeChannel);
+  document.body.appendChild(bridgeFrame);
+}
+window.addEventListener('message',function(event){
+  if(!bridgeFrame || event.source!==bridgeFrame.contentWindow)return;
+  const m=event.data;
+  if(!m||m.projectSocialBridge!==true||m.channel!==bridgeChannel)return;
+  if(m.ready===true){bridgeReady=true;return;}
+  const item=pending.get(m.id);
+  if(!item)return;
+  pending.delete(m.id);clearTimeout(item.timer);
+  m.ok?item.resolve(m.value):item.reject(Error(m.error||'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์'));
+});
 const api=(fn,...args)=>new Promise((resolve,reject)=>{
-  let finished=false;
-  const done=(error,value)=>{if(finished)return;finished=true;clearTimeout(timer);error?reject(error):resolve(value)};
-  const timer=setTimeout(()=>done(new Error('เซิร์ฟเวอร์ไม่ตอบกลับภายใน 25 วินาที กรุณาตรวจสอบ Deploy และสิทธิ์ Google Sheets')),25000);
-  try{
-    if(!window.google?.script?.run)throw Error('หน้านี้ต้องเปิดจาก URL Web App ของ Google Apps Script (/exec) ไม่ใช่เปิดไฟล์ HTML โดยตรง');
-    const runner=google.script.run.withSuccessHandler(v=>done(null,v)).withFailureHandler(e=>done(new Error(e?.message||String(e))));
-    // GAS exposes callable server methods through a proxy; do not rely on typeof for discovery.
-    runner[fn](...args);
-  }catch(e){done(e)}
+  try{startBridge();}catch(e){reject(e);return;}
+  const id=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();
+  const timer=setTimeout(()=>{pending.delete(id);reject(Error('หมดเวลารอ Apps Script (60 วินาที) ตรวจสอบ Deploy และสิทธิ์ Web App'));},60000);
+  pending.set(id,{resolve,reject,timer});
+  const send=()=>{
+    if(!pending.has(id))return;
+    if(bridgeReady){bridgeFrame.contentWindow.postMessage({projectSocialRequest:true,channel:bridgeChannel,id,fn,args},'*');}
+    else setTimeout(send,250);
+  };
+  send();
 });
 function toast(t){$('noticeRoot').innerHTML=`<div class="notice">${esc(t)}</div>`;clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('noticeRoot').innerHTML='',3700)}
 async function reload(){
