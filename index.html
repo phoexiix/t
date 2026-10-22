@@ -7,7 +7,7 @@ const S={accounts:[],posts:[],page:'home',current:'default',editing:null};
 const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const fmt=n=>new Intl.NumberFormat('th-TH').format(Number(n)||0);
 // Set this to your newly deployed Apps Script Web App /exec URL.
-const GAS_WEB_APP_URL='PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE';
+const GAS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbwPgadgh_zCwesoHEstifXrMCkiCAz_QPsSnsrjFc6rsC6fzgwltaGJPTtyNDL418_RHQ/exec';
 const BRIDGE_ORIGIN='https://phoexiix.github.io';
 const bridgeChannel=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36)).replace(/-/g,'');
 const pending=new Map();
