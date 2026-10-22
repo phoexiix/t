@@ -7,11 +7,11 @@ const S={accounts:[],posts:[],page:'home',current:'default',editing:null};
 const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const fmt=n=>new Intl.NumberFormat('th-TH').format(Number(n)||0);
 // Set this to your newly deployed Apps Script Web App /exec URL.
-const GAS_WEB_APP_URL='PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE';
+const GAS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbwPgadgh_zCwesoHEstifXrMCkiCAz_QPsSnsrjFc6rsC6fzgwltaGJPTtyNDL418_RHQ/exec';
 const BRIDGE_ORIGIN='https://phoexiix.github.io';
 const bridgeChannel=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36)).replace(/-/g,'');
 const pending=new Map();
-let bridgeReady=false, bridgeFrame=null;
+let bridgeReady=false, bridgeFrame=null, bridgeWindow=null, eventOriginBridge="*";
 function startBridge(){
   if(bridgeFrame)return;
   if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(GAS_WEB_APP_URL)){
@@ -25,10 +25,14 @@ function startBridge(){
   document.body.appendChild(bridgeFrame);
 }
 window.addEventListener('message',function(event){
-  if(!bridgeFrame || event.source!==bridgeFrame.contentWindow)return;
+  if(!bridgeFrame)return;
+  // HtmlService can use a nested googleusercontent iframe: the sender is not
+  // necessarily the outer iframe.contentWindow. Verify sender origin + nonce.
   const m=event.data;
   if(!m||m.projectSocialBridge!==true||m.channel!==bridgeChannel)return;
-  if(m.ready===true){bridgeReady=true;return;}
+  if(!/^https:\/\/(?:[a-z0-9-]+\.)*googleusercontent\.com$|^https:\/\/script\.google\.com$/i.test(event.origin))return;
+  if(m.ready===true){bridgeWindow=event.source;eventOriginBridge=event.origin;bridgeReady=true;return;}
+  if(event.source!==bridgeWindow)return;
   const item=pending.get(m.id);
   if(!item)return;
   pending.delete(m.id);clearTimeout(item.timer);
@@ -41,7 +45,7 @@ const api=(fn,...args)=>new Promise((resolve,reject)=>{
   pending.set(id,{resolve,reject,timer});
   const send=()=>{
     if(!pending.has(id))return;
-    if(bridgeReady){bridgeFrame.contentWindow.postMessage({projectSocialRequest:true,channel:bridgeChannel,id,fn,args},'*');}
+    if(bridgeReady){bridgeWindow.postMessage({projectSocialRequest:true,channel:bridgeChannel,id,fn,args},eventOriginBridge);}
     else setTimeout(send,250);
   };
   send();
