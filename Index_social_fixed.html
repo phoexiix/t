@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Project Social — Demo</title><script>
+/* Early diagnostic runs even if the main application cannot initialize. */
+(function(){
+  function fail(message){
+    var el=document.getElementById('main');
+    if(!el || window.__socialReady)return;
+    el.innerHTML='<div class="empty"><strong>ไม่สามารถเริ่มต้นเว็บไซต์ได้</strong><p style="overflow-wrap:anywhere;white-space:pre-wrap"></p><button class="primary" onclick="location.reload()">↻ โหลดหน้าใหม่</button></div>';
+    el.querySelector('p').textContent=message;
+  }
+  window.addEventListener('error',function(e){ fail('JavaScript: '+(e.message||'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ')); });
+  window.addEventListener('unhandledrejection',function(e){ fail('การโหลดข้อมูลผิดพลาด: '+String(e.reason && e.reason.message || e.reason)); });
+  window.addEventListener('load',function(){
+    setTimeout(function(){ if(!window.__socialReady)fail('โปรแกรมยังเริ่มทำงานไม่สำเร็จ ตรวจสอบว่าเปิด URL ของ Apps Script ที่ลงท้าย /exec และใช้ Deployment ล่าสุด'); },9000);
+  });
+})();
+</script><style>
+:root{color-scheme:dark;--bg:#000;--panel:#080808;--border:#292929;--fg:#eee;--muted:#858d97;--blue:#1d9bf0;--hover:#141414}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px system-ui,-apple-system,'Segoe UI',sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}.app{display:grid;grid-template-columns:260px minmax(380px,600px) 320px;max-width:1230px;margin:auto;min-height:100vh}.side{padding:20px 15px;border-right:1px solid var(--border);position:sticky;top:0;height:100vh}.logo{font-size:30px;font-weight:900;padding:4px 14px 16px}.navbtn{display:flex;align-items:center;gap:17px;padding:13px 16px;border:0;border-radius:40px;background:transparent;color:var(--fg);font-size:19px;font-weight:600;width:100%;text-align:left}.navbtn:hover,.iconbtn:hover{background:var(--hover)}.navbtn.active{font-weight:800}.primary{background:var(--blue);color:white;border:0;border-radius:28px;padding:13px 22px;font-weight:800}.composebig{width:92%;margin:20px 0}.content{border-right:1px solid var(--border);min-width:0}.top{position:sticky;top:0;z-index:3;background:#000e;border-bottom:1px solid var(--border);padding:14px 18px;backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center}.top b{font-size:21px}.small,.muted{color:var(--muted)}.small{font-size:12px}.pill{font-size:11px;padding:4px 8px;border:1px solid #375d7a;border-radius:99px;color:#86cfff}.post{border-bottom:1px solid var(--border);padding:14px 16px;display:flex;gap:11px}.avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#253141;flex-shrink:0;display:grid;place-items:center;font-size:20px;font-weight:800}.pbody{min-width:0;flex:1}.author{display:flex;flex-wrap:wrap;align-items:center;gap:5px}.author strong{overflow-wrap:anywhere}.verify{color:#1d9bf0;font-size:16px}.posttxt{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;margin:6px 0 10px}.images{display:grid;gap:3px;grid-template-columns:repeat(2,minmax(0,1fr));overflow:hidden;border:1px solid var(--border);border-radius:16px}.images.one{grid-template-columns:1fr}.images img{width:100%;max-height:320px;object-fit:cover;display:block}.actions{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:var(--muted)}.action,.iconbtn{border:0;background:transparent;color:inherit;padding:7px;border-radius:20px}.action:hover{color:var(--blue);background:#1d9bf014}.actleft{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.mini{font-size:13px}.right{padding:22px 20px}.box{background:#111;border-radius:16px;padding:20px;margin-bottom:16px}.box h3{margin:0 0 10px}.demo{display:inline-block;color:#bed7ec;background:#153347;padding:6px 12px;border-radius:15px;font-size:12px}.cover{height:165px;background:linear-gradient(135deg,#28435e,#121b32);background-size:cover;background-position:center}.profilehead{padding:0 20px 20px;border-bottom:1px solid var(--border)}.profileavatar{width:84px;height:84px;margin-top:-42px;border:4px solid black}.accountrow{display:flex;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer}.accountrow:hover{background:var(--hover)}.floating{position:fixed;right:20px;bottom:22px;z-index:8;display:none;box-shadow:0 8px 22px #0007}.overlay{position:fixed;inset:0;background:#2c36499c;z-index:10;display:flex;justify-content:center;align-items:flex-start;padding:6vh 12px;overflow:auto}.modal{background:#080808;border:1px solid #454545;border-radius:20px;width:min(590px,100%);padding:23px;box-shadow:0 20px 60px #0009}.modal h2{margin:0 0 15px}.field{display:block;margin:13px 0;color:#b5bcc3;font-size:13px}.field input,.field textarea,.field select{display:block;width:100%;margin-top:6px;color:var(--fg);background:#080808;border:1px solid #454545;border-radius:10px;padding:11px;outline:none}.field textarea{min-height:130px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--blue)}.twocol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.between{justify-content:space-between}.thumbnail{position:relative;display:inline-flex;margin:8px 6px 0 0}.thumbnail img{height:100px;max-width:145px;object-fit:cover;border-radius:12px}.thumbnail button{position:absolute;right:3px;top:3px;background:#111e;border:0;color:white;border-radius:50%;padding:3px 8px}.secondary{border:1px solid #49515c;background:transparent;color:var(--fg);border-radius:22px;padding:9px 15px}.hint{font-size:12px;color:var(--muted);line-height:1.5}.notice{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#1e2934;color:white;padding:12px 18px;border:1px solid #48627b;border-radius:12px;z-index:20;max-width:90%;box-shadow:0 4px 20px #000a}.empty{padding:45px 20px;text-align:center;color:var(--muted)}@media(max-width:1060px){.app{grid-template-columns:78px minmax(360px,600px)}.side{padding:15px 7px}.right{display:none}.navbtn{font-size:23px;justify-content:center;padding:12px 0}.navbtn span{display:none}.composebig{font-size:0;width:54px;height:54px;border-radius:50%;padding:0}.composebig:after{content:'+';font-size:30px}}@media(max-width:650px){.app{display:block;padding-bottom:62px}.side{height:60px;position:fixed;top:auto;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#050505;border-top:1px solid var(--border);border-right:0;z-index:5;padding:4px}.logo,.composebig{display:none}.navbtn{width:23%}.content{border-right:0}.floating{display:block;bottom:77px}.overlay{padding:12px 6px}.modal{padding:16px}.twocol{grid-template-columns:1fr}.post{padding:12px 9px}.avatar{width:40px;height:40px}}
+</style></head><body><div class="app"><aside class="side"><div class="logo">𝕏<span style="font-size:10px;color:#87c9f8"> DEMO</span></div><button class="navbtn active" onclick="showPage('home')">⌂ <span>หน้าแรก</span></button><button class="navbtn" onclick="showPage('profiles')">♙ <span>บัญชี</span></button><button class="navbtn" onclick="showPage('profile')">◎ <span>โปรไฟล์</span></button><button class="primary composebig" onclick="openPost()">โพสต์</button></aside><main class="content"><header class="top"><b id="heading">หน้าแรก</b><span class="demo">SIMULATION • ไม่ใช่ X จริง</span></header><div id="main"><div class="empty">กำลังโหลดข้อมูล...</div></div></main><aside class="right"><div class="box"><h3>Project Social</h3><p class="muted">แพลตฟอร์มจำลองสำหรับประกาศโครงการ สามารถสร้างบัญชีและกำหนดยอดตอบสนองของโพสต์ได้</p><span class="demo">เว็บไซต์จำลอง</span></div><div class="box"><h3>เมนูลัด</h3><p><button class="secondary" onclick="openPost()">＋ สร้างโพสต์ใหม่</button></p><p><button class="secondary" onclick="openAccount()">＋ เพิ่มบัญชีใหม่</button></p></div></aside></div><button class="primary floating" onclick="openPost()">＋ โพสต์</button><div id="modalroot"></div><div id="noticeRoot"></div><script>
+const S={accounts:[],posts:[],page:'home',current:'default',editing:null};
+const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const fmt=n=>new Intl.NumberFormat('th-TH').format(Number(n)||0);
+const api=(fn,...args)=>new Promise((resolve,reject)=>{
+  let finished=false;
+  const done=(error,value)=>{if(finished)return;finished=true;clearTimeout(timer);error?reject(error):resolve(value)};
+  const timer=setTimeout(()=>done(new Error('เซิร์ฟเวอร์ไม่ตอบกลับภายใน 25 วินาที กรุณาตรวจสอบ Deploy และสิทธิ์ Google Sheets')),25000);
+  try{
+    if(!window.google?.script?.run)throw Error('หน้านี้ต้องเปิดจาก URL Web App ของ Google Apps Script (/exec) ไม่ใช่เปิดไฟล์ HTML โดยตรง');
+    const runner=google.script.run.withSuccessHandler(v=>done(null,v)).withFailureHandler(e=>done(new Error(e?.message||String(e))));
+    if(typeof runner[fn]!=='function')throw Error('ไม่พบฟังก์ชัน '+fn+' ใน Code.gs กรุณา Deploy เวอร์ชันล่าสุด');
+    runner[fn](...args);
+  }catch(e){done(e)}
+});
+function toast(t){$('noticeRoot').innerHTML=`<div class="notice">${esc(t)}</div>`;clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('noticeRoot').innerHTML='',3700)}
+async function reload(){
+  window.__socialReady=true;
+  const main=$('main');
+  if(!S.posts.length)main.innerHTML='<div class="empty">กำลังโหลดข้อมูลจาก Google Sheets...</div>';
+  try{
+    const d=await api('getData');
+    if(!d||!Array.isArray(d.accounts)||!Array.isArray(d.posts))throw Error('รูปแบบข้อมูลจาก Code.gs ไม่ถูกต้อง');
+    S.accounts=d.accounts;S.posts=d.posts;
+    if(!S.accounts.some(a=>a.id===S.current))S.current=S.accounts[0]?.id||'default';
+    render();
+  }catch(e){
+    const msg=e?.message||String(e);
+    console.error('getData failed:',e);
+    main.innerHTML='<div class="empty"><strong>โหลดข้อมูลไม่สำเร็จ</strong><p style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(msg)+'</p><button class="primary" onclick="reload()">↻ ลองโหลดอีกครั้ง</button><p class="muted small">ตรวจสอบว่า Deploy เป็นเวอร์ชันใหม่, Execute as: Me และรัน setupProject สำเร็จแล้ว</p></div>';
+  }
+}
+function avatar(a,cls=''){return a?.avatar?`<img class="avatar ${cls}" src="${esc(a.avatar)}" alt="โปรไฟล์">`:`<div class="avatar ${cls}">${esc((a?.name||'?').slice(0,1))}</div>`}
+function author(a){return `<strong>${esc(a?.name||'ไม่พบบัญชี')}</strong>${a?.verified?'<span class="verify" title="ตรายืนยันแบบจำลอง">✿</span>':''}<span class="muted">@${esc(a?.handle||'unknown')}</span>`}
+function postHTML(p){let a=S.accounts.find(x=>x.id===p.accountId),d=new Date(p.created),imgs=p.images.length?`<div class="images ${p.images.length===1?'one':''}">${p.images.map(x=>`<img loading="lazy" src="${esc(x)}" alt="ภาพโพสต์">`).join('')}</div>`:'';return `<article class="post">${avatar(a)}<div class="pbody"><div class="author">${author(a)}<span class="muted">· ${esc(d.toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'}))}</span></div>${p.pinned?'<div class="small">📌 โพสต์ที่ปักหมุด</div>':''}<div class="posttxt">${esc(p.text)}</div>${imgs}<div class="actions"><span class="actleft"><button class="action" onclick="react('${p.id}','comments')">♧ ${fmt(p.comments)}</button><button class="action" onclick="react('${p.id}','reposts')">⇄ ${fmt(p.reposts)}</button><button class="action" onclick="react('${p.id}','likes')">♡ ${fmt(p.likes)}</button></span><span><button class="iconbtn" onclick="openPost('${p.id}')" title="แก้ไขโพสต์">✎</button><button class="iconbtn" onclick="removePost('${p.id}')" title="ลบโพสต์">🗑</button></span></div></div></article>`}
+function render(){document.querySelectorAll('.navbtn').forEach((x,i)=>x.classList.toggle('active',['home','profiles','profile'][i]===S.page));$('heading').textContent=({home:'หน้าแรก',profiles:'บัญชีทั้งหมด',profile:'โปรไฟล์'})[S.page];
+if(S.page==='profiles'){$('main').innerHTML=`<div style="padding:15px"><button class="primary" onclick="openAccount()">＋ สร้างบัญชีใหม่</button></div>`+S.accounts.map(a=>`<div class="accountrow" onclick="choose('${a.id}')">${avatar(a)}<div style="flex:1">${author(a)}<div class="small">${esc(a.bio)}</div></div><button class="secondary" onclick="event.stopPropagation();openAccount('${a.id}')">แก้ไข</button></div>`).join('');return}
+if(S.page==='profile'){let a=S.accounts.find(x=>x.id===S.current);if(!a)return;$('main').innerHTML=`<div class="cover" style="${a.cover?`background-image:url('${esc(a.cover)}')`:''}"></div><div class="profilehead"><div class="row between">${avatar(a,'profileavatar')}<button class="secondary" onclick="openAccount('${a.id}')">แก้ไขโปรไฟล์</button></div><h2 style="margin:8px 0 0">${esc(a.name)} ${a.verified?'<span class="verify">✿</span>':''}</h2><div class="muted">@${esc(a.handle)}</div><p>${esc(a.bio)}</p><button class="primary" onclick="openPost()">＋ โพสต์ในบัญชีนี้</button></div>`+S.posts.filter(p=>p.accountId===S.current).map(postHTML).join('') ;return}
+$('main').innerHTML=`<div style="display:flex;gap:10px;align-items:center;padding:14px;border-bottom:1px solid var(--border)"><select id="accountChoice" onchange="S.current=this.value" style="min-width:0;flex:1;background:#111;border:1px solid #444;color:white;border-radius:12px;padding:11px">${S.accounts.map(a=>`<option value="${esc(a.id)}" ${a.id===S.current?'selected':''}>${esc(a.name)} (@${esc(a.handle)})</option>`).join('')}</select><button class="primary" onclick="openPost()">＋ โพสต์</button></div>`+(S.posts.length?S.posts.map(postHTML).join(''):'<div class="empty">ยังไม่มีโพสต์ กดปุ่ม “โพสต์” เพื่อเริ่มต้น</div>')}
+function showPage(v){S.page=v;render()}function choose(id){S.current=id;showPage('profile')}
+function closeModal(){$('modalroot').innerHTML=''}
+function frame(inner){$('modalroot').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeModal()"><section class="modal">${inner}</section></div>`}
+let images=[];
+function openPost(id){let p=S.posts.find(x=>x.id===id);images=p?[...p.images]:[];S.editing=id||null;frame(`<div class="row between"><h2>${id?'แก้ไขโพสต์':'สร้างโพสต์ใหม่'}</h2><button class="iconbtn" onclick="closeModal()">✕</button></div><form id="postForm" onsubmit="submitPost(event)"><label class="field">โพสต์ในนามบัญชี<select id="postAccount">${S.accounts.map(a=>`<option value="${esc(a.id)}" ${(p?.accountId||S.current)===a.id?'selected':''}>${esc(a.name)} (@${esc(a.handle)})</option>`).join('')}</select></label><label class="field">ข้อความ<textarea id="postText" maxlength="3000" placeholder="มีอะไรเกิดขึ้นบ้าง?">${esc(p?.text||'')}</textarea></label><div class="row"><label class="secondary" style="cursor:pointer">📷 เพิ่มรูป (สูงสุด 4 รูป)<input id="postPhotos" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onchange="uploadFiles(event,'post')"></label><small class="muted" id="uploadStatus"></small></div><div id="preview"></div><div class="twocol"><label class="field">จำนวนไลก์<input type="number" min="0" max="999999999" id="postLikes" value="${p?.likes||0}" required></label><label class="field">จำนวนคอมเมนต์<input type="number" min="0" max="999999999" id="postComments" value="${p?.comments||0}" required></label><label class="field">จำนวนรีโพสต์<input type="number" min="0" max="999999999" id="postReposts" value="${p?.reposts||0}" required></label><label class="field">ปักหมุด<select id="postPinned"><option value="false">ไม่ปักหมุด</option><option value="true" ${p?.pinned?'selected':''}>ปักหมุด</option></select></label></div><p class="hint">ยอดตอบสนองเป็นตัวเลขจำลองที่คุณตั้งได้ ผู้ชมกดปุ่มเพื่อเพิ่มจำนวนได้ด้วย</p><div class="row between"><button type="button" class="secondary" onclick="closeModal()">ยกเลิก</button><button type="submit" id="submitPostBtn" class="primary">${id?'บันทึก':'โพสต์'}</button></div></form>`);preview()}
+function preview(){$('preview').innerHTML=images.map((x,i)=>`<span class="thumbnail"><img src="${esc(x)}"><button type="button" onclick="images.splice(${i},1);preview()">✕</button></span>`).join('')}
+async function uploadFiles(event,mode){
+  const source=event.currentTarget || event.target;
+  const files=Array.from(source.files || []);
+  const root=$('modalroot');
+  const activeModal=root && source.closest('.modal');
+  const uploadStatus=activeModal?.querySelector('#uploadStatus');
+  if(mode==='post' && files.length+images.length>4){
+    toast('โพสต์หนึ่งแนบรูปได้สูงสุด 4 รูป');source.value='';return;
+  }
+  source.disabled=true;
+  let succeeded=0;
+  try{
+    for(const file of files){
+      if(file.size>5*1024*1024){toast('ขนาดรูปเกิน 5 MB: '+file.name);continue;}
+      if(uploadStatus?.isConnected) uploadStatus.textContent='กำลังอัปโหลด '+file.name;
+      try{
+        const url=await api('uploadImage',await readFile(file));
+        // Modal may have been closed or replaced while Apps Script was uploading.
+        if(!activeModal?.isConnected){
+          toast('อัปโหลดไฟล์แล้ว แต่หน้าต่างถูกปิด กรุณาเปิดหน้าต่างใหม่และเลือกไฟล์อีกครั้ง');
+          break;
+        }
+        if(mode==='post'){
+          images.push(url);
+          preview();
+        }else{
+          const target=activeModal.querySelector('#'+mode);
+          const previewTarget=activeModal.querySelector('#'+mode+'Preview');
+          if(!target || !previewTarget){
+            throw Error('ไม่พบช่องเก็บรูปภาพ กรุณาเปิดหน้าต่างบัญชีใหม่');
+          }
+          target.value=url;
+          previewTarget.innerHTML=`<img src="${esc(url)}" style="width:90px;height:90px;object-fit:cover;border-radius:12px" alt="รูปที่อัปโหลด">`;
+        }
+        succeeded++;
+      }catch(e){toast('อัปโหลดไม่สำเร็จ: '+(e?.message||String(e)));}
+    }
+    if(uploadStatus?.isConnected) uploadStatus.textContent=succeeded?'อัปโหลดสำเร็จ '+succeeded+' รูป':'';
+  }finally{
+    source.disabled=false;
+    source.value='';
+  }
+}
+function readFile(file){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=fail;r.readAsDataURL(file)})}
+async function submitPost(e){e.preventDefault();let b=$('submitPostBtn');b.disabled=true;try{await api('savePost',{id:S.editing,accountId:$('postAccount').value,text:$('postText').value,images:[...images],likes:Number($('postLikes').value),comments:Number($('postComments').value),reposts:Number($('postReposts').value),pinned:$('postPinned').value==='true'});closeModal();await reload();toast('บันทึกโพสต์เรียบร้อย')}catch(e){toast('บันทึกไม่ได้: '+e.message);b.disabled=false}}
+let accountEditing=null;
+function openAccount(id){accountEditing=id||null;let a=S.accounts.find(x=>x.id===id)||{};frame(`<div class="row between"><h2>${id?'ตั้งค่าบัญชี':'สร้างบัญชีใหม่'}</h2><button class="iconbtn" onclick="closeModal()">✕</button></div><form onsubmit="submitAccount(event)"><label class="field">ชื่อบัญชี<input id="accName" maxlength="80" required value="${esc(a.name||'')}"></label><label class="field">ชื่อผู้ใช้ (@username)<input id="accHandle" maxlength="40" pattern="[a-zA-Z0-9_]{2,40}" required value="${esc(a.handle||'')}"></label><label class="field">คำอธิบายบัญชี<textarea id="accBio" maxlength="250" style="min-height:75px">${esc(a.bio||'')}</textarea></label><label class="field">ติ๊กฟ้ายืนยันแบบจำลอง<select id="accVerified"><option value="false">ไม่มีติ๊กฟ้า</option><option value="true" ${a.verified?'selected':''}>แสดงติ๊กฟ้า</option></select></label><label class="field">รูปโปรไฟล์<input type="file" accept="image/*" onchange="uploadFiles(event,'accAvatar')"><input type="hidden" id="accAvatar" value="${esc(a.avatar||'')}"><span id="accAvatarPreview">${a.avatar?`<img src="${esc(a.avatar)}" width="80">`:''}</span></label><label class="field">รูปหน้าปก<input type="file" accept="image/*" onchange="uploadFiles(event,'accCover')"><input type="hidden" id="accCover" value="${esc(a.cover||'')}"><span id="accCoverPreview">${a.cover?`<img src="${esc(a.cover)}" width="120">`:''}</span></label><p class="hint">ติ๊กฟ้าเป็นเครื่องหมายตกแต่งภายในเว็บไซต์จำลอง ไม่ใช่การยืนยันตัวตนจาก X</p><div class="row between"><button class="secondary" type="button" onclick="closeModal()">ยกเลิก</button><button id="saveAccountBtn" class="primary" type="submit">บันทึกบัญชี</button></div></form>`)}
+async function submitAccount(e){e.preventDefault();let b=$('saveAccountBtn');b.disabled=true;try{let r=await api('saveAccount',{id:accountEditing,name:$('accName').value,handle:$('accHandle').value,bio:$('accBio').value,verified:$('accVerified').value==='true',avatar:$('accAvatar').value,cover:$('accCover').value});S.current=r.id;closeModal();await reload();showPage('profile');toast('บันทึกบัญชีแล้ว')}catch(e){toast('บันทึกบัญชีไม่ได้: '+e.message);b.disabled=false}}
+async function removePost(id){if(!confirm('ต้องการลบโพสต์นี้ใช่หรือไม่?'))return;try{await api('deletePost',id);await reload();toast('ลบโพสต์แล้ว')}catch(e){toast(e.message)}}
+async function react(id,type){try{await api('react',id,type);await reload()}catch(e){toast(e.message)}}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',reload);}else{reload();}
+</script></body></html>
