@@ -4,9 +4,33 @@
 const S={accounts:[],posts:[],page:'home',current:'default',editing:null};
 const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const fmt=n=>new Intl.NumberFormat('th-TH').format(Number(n)||0);
-const api=(fn,...args)=>new Promise((resolve,reject)=>{google.script.run.withSuccessHandler(resolve).withFailureHandler(e=>reject(Error(e.message||String(e))))[fn](...args)});
+const api=(fn,...args)=>new Promise((resolve,reject)=>{
+  let finished=false;
+  const done=(error,value)=>{if(finished)return;finished=true;clearTimeout(timer);error?reject(error):resolve(value)};
+  const timer=setTimeout(()=>done(new Error('เซิร์ฟเวอร์ไม่ตอบกลับภายใน 25 วินาที กรุณาตรวจสอบ Deploy และสิทธิ์ Google Sheets')),25000);
+  try{
+    if(!window.google?.script?.run)throw Error('หน้านี้ต้องเปิดจาก URL Web App ของ Google Apps Script (/exec) ไม่ใช่เปิดไฟล์ HTML โดยตรง');
+    const runner=google.script.run.withSuccessHandler(v=>done(null,v)).withFailureHandler(e=>done(new Error(e?.message||String(e))));
+    if(typeof runner[fn]!=='function')throw Error('ไม่พบฟังก์ชัน '+fn+' ใน Code.gs กรุณา Deploy เวอร์ชันล่าสุด');
+    runner[fn](...args);
+  }catch(e){done(e)}
+});
 function toast(t){$('noticeRoot').innerHTML=`<div class="notice">${esc(t)}</div>`;clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('noticeRoot').innerHTML='',3700)}
-async function reload(){try{let d=await api('getData');S.accounts=d.accounts;S.posts=d.posts;if(!S.accounts.some(a=>a.id===S.current))S.current=S.accounts[0]?.id||'default';render()}catch(e){toast('โหลดข้อมูลไม่ได้: '+e.message);$('main').innerHTML='<div class="empty">ไม่สามารถโหลดข้อมูลได้ กรุณารัน setupProject ใน Apps Script และตรวจสอบสิทธิ์</div>'}}
+async function reload(){
+  const main=$('main');
+  if(!S.posts.length)main.innerHTML='<div class="empty">กำลังโหลดข้อมูลจาก Google Sheets...</div>';
+  try{
+    const d=await api('getData');
+    if(!d||!Array.isArray(d.accounts)||!Array.isArray(d.posts))throw Error('รูปแบบข้อมูลจาก Code.gs ไม่ถูกต้อง');
+    S.accounts=d.accounts;S.posts=d.posts;
+    if(!S.accounts.some(a=>a.id===S.current))S.current=S.accounts[0]?.id||'default';
+    render();
+  }catch(e){
+    const msg=e?.message||String(e);
+    console.error('getData failed:',e);
+    main.innerHTML='<div class="empty"><strong>โหลดข้อมูลไม่สำเร็จ</strong><p style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(msg)+'</p><button class="primary" onclick="reload()">↻ ลองโหลดอีกครั้ง</button><p class="muted small">ตรวจสอบว่า Deploy เป็นเวอร์ชันใหม่, Execute as: Me และรัน setupProject สำเร็จแล้ว</p></div>';
+  }
+}
 function avatar(a,cls=''){return a?.avatar?`<img class="avatar ${cls}" src="${esc(a.avatar)}" alt="โปรไฟล์">`:`<div class="avatar ${cls}">${esc((a?.name||'?').slice(0,1))}</div>`}
 function author(a){return `<strong>${esc(a?.name||'ไม่พบบัญชี')}</strong>${a?.verified?'<span class="verify" title="ตรายืนยันแบบจำลอง">✿</span>':''}<span class="muted">@${esc(a?.handle||'unknown')}</span>`}
 function postHTML(p){let a=S.accounts.find(x=>x.id===p.accountId),d=new Date(p.created),imgs=p.images.length?`<div class="images ${p.images.length===1?'one':''}">${p.images.map(x=>`<img loading="lazy" src="${esc(x)}" alt="ภาพโพสต์">`).join('')}</div>`:'';return `<article class="post">${avatar(a)}<div class="pbody"><div class="author">${author(a)}<span class="muted">· ${esc(d.toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'}))}</span></div>${p.pinned?'<div class="small">📌 โพสต์ที่ปักหมุด</div>':''}<div class="posttxt">${esc(p.text)}</div>${imgs}<div class="actions"><span class="actleft"><button class="action" onclick="react('${p.id}','comments')">♧ ${fmt(p.comments)}</button><button class="action" onclick="react('${p.id}','reposts')">⇄ ${fmt(p.reposts)}</button><button class="action" onclick="react('${p.id}','likes')">♡ ${fmt(p.likes)}</button></span><span><button class="iconbtn" onclick="openPost('${p.id}')" title="แก้ไขโพสต์">✎</button><button class="iconbtn" onclick="removePost('${p.id}')" title="ลบโพสต์">🗑</button></span></div></div></article>`}
