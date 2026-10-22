@@ -20,7 +20,49 @@ function frame(inner){$('modalroot').innerHTML=`<div class="overlay" onclick="if
 let images=[];
 function openPost(id){let p=S.posts.find(x=>x.id===id);images=p?[...p.images]:[];S.editing=id||null;frame(`<div class="row between"><h2>${id?'แก้ไขโพสต์':'สร้างโพสต์ใหม่'}</h2><button class="iconbtn" onclick="closeModal()">✕</button></div><form id="postForm" onsubmit="submitPost(event)"><label class="field">โพสต์ในนามบัญชี<select id="postAccount">${S.accounts.map(a=>`<option value="${esc(a.id)}" ${(p?.accountId||S.current)===a.id?'selected':''}>${esc(a.name)} (@${esc(a.handle)})</option>`).join('')}</select></label><label class="field">ข้อความ<textarea id="postText" maxlength="3000" placeholder="มีอะไรเกิดขึ้นบ้าง?">${esc(p?.text||'')}</textarea></label><div class="row"><label class="secondary" style="cursor:pointer">📷 เพิ่มรูป (สูงสุด 4 รูป)<input id="postPhotos" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden onchange="uploadFiles(event,'post')"></label><small class="muted" id="uploadStatus"></small></div><div id="preview"></div><div class="twocol"><label class="field">จำนวนไลก์<input type="number" min="0" max="999999999" id="postLikes" value="${p?.likes||0}" required></label><label class="field">จำนวนคอมเมนต์<input type="number" min="0" max="999999999" id="postComments" value="${p?.comments||0}" required></label><label class="field">จำนวนรีโพสต์<input type="number" min="0" max="999999999" id="postReposts" value="${p?.reposts||0}" required></label><label class="field">ปักหมุด<select id="postPinned"><option value="false">ไม่ปักหมุด</option><option value="true" ${p?.pinned?'selected':''}>ปักหมุด</option></select></label></div><p class="hint">ยอดตอบสนองเป็นตัวเลขจำลองที่คุณตั้งได้ ผู้ชมกดปุ่มเพื่อเพิ่มจำนวนได้ด้วย</p><div class="row between"><button type="button" class="secondary" onclick="closeModal()">ยกเลิก</button><button type="submit" id="submitPostBtn" class="primary">${id?'บันทึก':'โพสต์'}</button></div></form>`);preview()}
 function preview(){$('preview').innerHTML=images.map((x,i)=>`<span class="thumbnail"><img src="${esc(x)}"><button type="button" onclick="images.splice(${i},1);preview()">✕</button></span>`).join('')}
-async function uploadFiles(event,mode){const files=[...event.target.files];if(mode==='post'&&files.length+images.length>4){toast('โพสต์หนึ่งแนบรูปได้สูงสุด 4 รูป');return}let status=$('uploadStatus');for(let file of files){if(file.size>5*1024*1024){toast('ขนาดรูปเกิน 5 MB: '+file.name);continue}if(status)status.textContent='กำลังอัปโหลด '+file.name;try{let url=await api('uploadImage',await readFile(file));if(mode==='post'){images.push(url);preview()}else{$(mode).value=url;$(mode+'Preview').innerHTML=`<img src="${esc(url)}" style="width:90px;height:90px;object-fit:cover;border-radius:12px">`}}catch(e){toast('อัปโหลดไม่สำเร็จ: '+e.message)}}if(status)status.textContent='อัปโหลดเสร็จ';event.target.value=''}
+async function uploadFiles(event,mode){
+  const source=event.currentTarget || event.target;
+  const files=Array.from(source.files || []);
+  const root=$('modalroot');
+  const activeModal=root && source.closest('.modal');
+  const uploadStatus=activeModal?.querySelector('#uploadStatus');
+  if(mode==='post' && files.length+images.length>4){
+    toast('โพสต์หนึ่งแนบรูปได้สูงสุด 4 รูป');source.value='';return;
+  }
+  source.disabled=true;
+  let succeeded=0;
+  try{
+    for(const file of files){
+      if(file.size>5*1024*1024){toast('ขนาดรูปเกิน 5 MB: '+file.name);continue;}
+      if(uploadStatus?.isConnected) uploadStatus.textContent='กำลังอัปโหลด '+file.name;
+      try{
+        const url=await api('uploadImage',await readFile(file));
+        // Modal may have been closed or replaced while Apps Script was uploading.
+        if(!activeModal?.isConnected){
+          toast('อัปโหลดไฟล์แล้ว แต่หน้าต่างถูกปิด กรุณาเปิดหน้าต่างใหม่และเลือกไฟล์อีกครั้ง');
+          break;
+        }
+        if(mode==='post'){
+          images.push(url);
+          preview();
+        }else{
+          const target=activeModal.querySelector('#'+mode);
+          const previewTarget=activeModal.querySelector('#'+mode+'Preview');
+          if(!target || !previewTarget){
+            throw Error('ไม่พบช่องเก็บรูปภาพ กรุณาเปิดหน้าต่างบัญชีใหม่');
+          }
+          target.value=url;
+          previewTarget.innerHTML=`<img src="${esc(url)}" style="width:90px;height:90px;object-fit:cover;border-radius:12px" alt="รูปที่อัปโหลด">`;
+        }
+        succeeded++;
+      }catch(e){toast('อัปโหลดไม่สำเร็จ: '+(e?.message||String(e)));}
+    }
+    if(uploadStatus?.isConnected) uploadStatus.textContent=succeeded?'อัปโหลดสำเร็จ '+succeeded+' รูป':'';
+  }finally{
+    source.disabled=false;
+    source.value='';
+  }
+}
 function readFile(file){return new Promise((ok,fail)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=fail;r.readAsDataURL(file)})}
 async function submitPost(e){e.preventDefault();let b=$('submitPostBtn');b.disabled=true;try{await api('savePost',{id:S.editing,accountId:$('postAccount').value,text:$('postText').value,images:[...images],likes:Number($('postLikes').value),comments:Number($('postComments').value),reposts:Number($('postReposts').value),pinned:$('postPinned').value==='true'});closeModal();await reload();toast('บันทึกโพสต์เรียบร้อย')}catch(e){toast('บันทึกไม่ได้: '+e.message);b.disabled=false}}
 let accountEditing=null;
