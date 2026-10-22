@@ -1,16 +1,27 @@
 <!DOCTYPE html><html lang="th"><head><link rel="icon" type="image/png" href="https://i.postimg.cc/DzNJthDj/x.png"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Project Social</title><style>
 :root{color-scheme:dark;--bg:#000;--panel:#080808;--border:#292929;--fg:#eee;--muted:#858d97;--blue:#1d9bf0;--hover:#141414}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px system-ui,-apple-system,'Segoe UI',sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}.app{display:grid;grid-template-columns:260px minmax(380px,600px) 320px;max-width:1230px;margin:auto;min-height:100vh}.side{padding:20px 15px;border-right:1px solid var(--border);position:sticky;top:0;height:100vh}.logo{font-size:30px;font-weight:900;padding:4px 14px 16px}.navbtn{display:flex;align-items:center;gap:17px;padding:13px 16px;border:0;border-radius:40px;background:transparent;color:var(--fg);font-size:19px;font-weight:600;width:100%;text-align:left}.navbtn:hover,.iconbtn:hover{background:var(--hover)}.navbtn.active{font-weight:800}.primary{background:var(--blue);color:white;border:0;border-radius:28px;padding:13px 22px;font-weight:800}.composebig{width:92%;margin:20px 0}.content{border-right:1px solid var(--border);min-width:0}.top{position:sticky;top:0;z-index:3;background:#000e;border-bottom:1px solid var(--border);padding:14px 18px;backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center}.top b{font-size:21px}.small,.muted{color:var(--muted)}.small{font-size:12px}.pill{font-size:11px;padding:4px 8px;border:1px solid #375d7a;border-radius:99px;color:#86cfff}.post{border-bottom:1px solid var(--border);padding:14px 16px;display:flex;gap:11px}.avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#253141;flex-shrink:0;display:grid;place-items:center;font-size:20px;font-weight:800}.pbody{min-width:0;flex:1}.author{display:flex;flex-wrap:wrap;align-items:center;gap:5px}.author strong{overflow-wrap:anywhere}.verify{color:#1d9bf0;font-size:16px}.posttxt{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;margin:6px 0 10px}.images{display:grid;gap:3px;grid-template-columns:repeat(2,minmax(0,1fr));overflow:hidden;border:1px solid var(--border);border-radius:16px}.images.one{grid-template-columns:1fr}.images img{width:100%;max-height:320px;object-fit:cover;display:block}.actions{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:var(--muted)}.action,.iconbtn{border:0;background:transparent;color:inherit;padding:7px;border-radius:20px}.action:hover{color:var(--blue);background:#1d9bf014}.actleft{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.mini{font-size:13px}.right{padding:22px 20px}.box{background:#111;border-radius:16px;padding:20px;margin-bottom:16px}.box h3{margin:0 0 10px}.demo{display:inline-block;color:#bed7ec;background:#153347;padding:6px 12px;border-radius:15px;font-size:12px}.cover{height:165px;background:linear-gradient(135deg,#28435e,#121b32);background-size:cover;background-position:center}.profilehead{padding:0 20px 20px;border-bottom:1px solid var(--border)}.profileavatar{width:84px;height:84px;margin-top:-42px;border:4px solid black}.accountrow{display:flex;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer}.accountrow:hover{background:var(--hover)}.floating{position:fixed;right:20px;bottom:22px;z-index:8;display:none;box-shadow:0 8px 22px #0007}.overlay{position:fixed;inset:0;background:#2c36499c;z-index:10;display:flex;justify-content:center;align-items:flex-start;padding:6vh 12px;overflow:auto}.modal{background:#080808;border:1px solid #454545;border-radius:20px;width:min(590px,100%);padding:23px;box-shadow:0 20px 60px #0009}.modal h2{margin:0 0 15px}.field{display:block;margin:13px 0;color:#b5bcc3;font-size:13px}.field input,.field textarea,.field select{display:block;width:100%;margin-top:6px;color:var(--fg);background:#080808;border:1px solid #454545;border-radius:10px;padding:11px;outline:none}.field textarea{min-height:130px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--blue)}.twocol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.between{justify-content:space-between}.thumbnail{position:relative;display:inline-flex;margin:8px 6px 0 0}.thumbnail img{height:100px;max-width:145px;object-fit:cover;border-radius:12px}.thumbnail button{position:absolute;right:3px;top:3px;background:#111e;border:0;color:white;border-radius:50%;padding:3px 8px}.secondary{border:1px solid #49515c;background:transparent;color:var(--fg);border-radius:22px;padding:9px 15px}.hint{font-size:12px;color:var(--muted);line-height:1.5}.notice{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#1e2934;color:white;padding:12px 18px;border:1px solid #48627b;border-radius:12px;z-index:20;max-width:90%;box-shadow:0 4px 20px #000a}.empty{padding:45px 20px;text-align:center;color:var(--muted)}@media(max-width:1060px){.app{grid-template-columns:78px minmax(360px,600px)}.side{padding:15px 7px}.right{display:none}.navbtn{font-size:23px;justify-content:center;padding:12px 0}.navbtn span{display:none}.composebig{font-size:0;width:54px;height:54px;border-radius:50%;padding:0}.composebig:after{content:'+';font-size:30px}}@media(max-width:650px){.app{display:block;padding-bottom:62px}.side{height:60px;position:fixed;top:auto;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#050505;border-top:1px solid var(--border);border-right:0;z-index:5;padding:4px}.logo,.composebig{display:none}.navbtn{width:23%}.content{border-right:0}.floating{display:block;bottom:77px}.overlay{padding:12px 6px}.modal{padding:16px}.twocol{grid-template-columns:1fr}.post{padding:12px 9px}.avatar{width:40px;height:40px}}
 
-/* Multi-photo posts: horizontal swipe carousel, retaining the existing post width. */
+/* Multi-photo posts: keep the original aspect ratio while fitting the post width. */
 .images.carousel{display:flex;gap:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;border:0;border-radius:0}
 .images.carousel::-webkit-scrollbar{display:none}
-.images.carousel img{display:block;width:100%;min-width:100%;max-height:440px;aspect-ratio:16/9;object-fit:contain;flex:0 0 100%;scroll-snap-align:start;background:#080808}
+.images.one img{display:block;width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+.images.carousel img{display:block;width:100%;min-width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;flex:0 0 100%;scroll-snap-align:start;background:#080808}
 .photo-slider{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:16px}
 .photo-slider .photo-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:1;display:grid;place-items:center;width:34px;height:34px;background:#000b;color:#fff;border:1px solid #ffffff55;border-radius:50%;padding:0;font-size:22px;line-height:1}
 .photo-slider .photo-arrow.prev{left:9px}.photo-slider .photo-arrow.next{right:9px}
 .photo-slider .photo-counter{position:absolute;right:10px;bottom:10px;background:#000a;color:white;border-radius:20px;padding:4px 9px;font-size:12px;pointer-events:none}
 @media(max-width:650px){.photo-slider .photo-arrow{width:30px;height:30px;font-size:19px}}
-</style></head><body><div class="app"><aside class="side"><div class="logo">𝕏<span style="font-size:10px;color:#87c9f8"> </span></div><button class="navbtn active" onclick="showPage('home')">⌂ <span>หน้าแรก</span></button><button class="navbtn" onclick="showPage('profiles')">♙ <span>บัญชี</span></button><button class="navbtn" onclick="showPage('profile')">◎ <span>โปรไฟล์</span></button><button class="primary composebig" onclick="openPost()">โพสต์</button></aside><main class="content"><header class="top"><b id="heading">หน้าแรก</b><span class="demo">SIMULATION • ไม่ใช่ X จริง</span></header><div id="main"><div class="empty">กำลังโหลดข้อมูล...</div></div></main><aside class="right"><div class="box"><h3>Project Social</h3><p class="muted">แพลตฟอร์มจำลองสำหรับประกาศโครงการ สามารถสร้างบัญชีและกำหนดยอดตอบสนองของโพสต์ได้</p><span class="demo">เว็บไซต์จำลอง</span></div><div class="box"><h3>เมนูลัด</h3><p><button class="secondary" onclick="openPost()">＋ สร้างโพสต์ใหม่</button></p><p><button class="secondary" onclick="openAccount()">＋ เพิ่มบัญชีใหม่</button></p></div></aside></div><button class="primary floating" onclick="openPost()">＋ โพสต์</button><div id="modalroot"></div><div id="noticeRoot"></div><script>
+
+/* Fullscreen photo viewer; does not alter original photo proportions. */
+.images img{cursor:zoom-in}
+.photo-lightbox{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.96);display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+.photo-lightbox img{display:block;max-width:100vw;max-height:100dvh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.photo-lightbox .lb-close,.photo-lightbox .lb-arrow{position:absolute;border:0;color:#fff;background:rgba(25,25,25,.75);border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font-size:30px;cursor:pointer;z-index:2}
+.photo-lightbox .lb-close{top:16px;right:18px;font-size:25px}
+.photo-lightbox .lb-prev{left:12px}.photo-lightbox .lb-next{right:12px}
+.photo-lightbox .lb-count{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#222c;color:#fff;padding:6px 14px;border-radius:20px;font-size:14px}
+@media(max-width:650px){.photo-lightbox .lb-arrow{width:36px;height:36px;font-size:25px}.photo-lightbox .lb-prev{left:5px}.photo-lightbox .lb-next{right:5px}}
+</style></head><body><div class="app"><aside class="side"><div class="logo">𝕏<span style="font-size:10px;color:#87c9f8"> </span></div><button class="navbtn active" onclick="showPage('home')">⌂ <span>หน้าแรก</span></button><button class="navbtn" onclick="showPage('profiles')">♙ <span>บัญชี</span></button><button class="navbtn" onclick="showPage('profile')">◎ <span>โปรไฟล์</span></button><button class="primary composebig" onclick="openPost()">โพสต์</button></aside><main class="content"><header class="top"><b id="heading">หน้าแรก</b><span class="demo">SIMULATION • ไม่ใช่ X จริง</span></header><div id="main"><div class="empty">กำลังโหลดข้อมูล...</div></div></main><aside class="right"><div class="box"><h3>Project Social</h3><p class="muted">แพลตฟอร์มจำลองสำหรับประกาศโครงการ สามารถสร้างบัญชีและกำหนดยอดตอบสนองของโพสต์ได้</p><span class="demo">เว็บไซต์จำลอง</span></div><div class="box"><h3>เมนูลัด</h3><p><button class="secondary" onclick="openPost()">＋ สร้างโพสต์ใหม่</button></p><p><button class="secondary" onclick="openAccount()">＋ เพิ่มบัญชีใหม่</button></p></div></aside></div><button class="primary floating" onclick="openPost()">＋ โพสต์</button><div id="modalroot"></div><div id="noticeRoot"></div><div id="photoLightboxRoot"></div><script>
 window.addEventListener("error",function(e){var m=document.getElementById("main");if(m&&m.textContent.includes("กำลังโหลด"))m.textContent="JavaScript ผิดพลาด: "+e.message+" (บรรทัด "+e.lineno+")";});
 
 const S={accounts:[],posts:[],page:'home',current:'',editing:null};
@@ -84,9 +95,9 @@ function postHTML(p){
   const photos=Array.isArray(p.images)?p.images:[];
   let imgs='';
   if(photos.length===1){
-    imgs=`<div class="images one"><img loading="lazy" src="${esc(photos[0])}" alt="ภาพโพสต์"></div>`;
+    imgs=`<div class="images one"><img loading="lazy" src="${esc(photos[0])}" alt="ภาพโพสต์" onclick="openPhotoLightbox(this)"></div>`;
   }else if(photos.length>1){
-    const slides=photos.map((url,i)=>`<img loading="lazy" src="${esc(url)}" alt="ภาพโพสต์ ${i+1} จาก ${photos.length}">`).join('');
+    const slides=photos.map((url,i)=>`<img loading="lazy" src="${esc(url)}" alt="ภาพโพสต์ ${i+1} จาก ${photos.length}" onclick="openPhotoLightbox(this)">`).join('');
     imgs=`<div class="photo-slider"><div class="images carousel" onscroll="updatePhotoCounter(this)">${slides}</div><button type="button" class="photo-arrow prev" aria-label="รูปก่อนหน้า" onclick="slidePhoto(this,-1)">‹</button><button type="button" class="photo-arrow next" aria-label="รูปถัดไป" onclick="slidePhoto(this,1)">›</button><span class="photo-counter">1 / ${photos.length}</span></div>`;
   }
   return `<article class="post">${avatar(a)}<div class="pbody"><div class="author">${author(a)}<span class="muted">· ${esc(d.toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'}))}</span></div>${p.pinned?'<div class="small">📌 โพสต์ที่ปักหมุด</div>':''}<div class="posttxt">${esc(p.text)}</div>${imgs}<div class="actions"><span class="actleft"><button class="action" onclick="react('${p.id}','comments')">♧ ${fmt(p.comments)}</button><button class="action" onclick="react('${p.id}','reposts')">⇄ ${fmt(p.reposts)}</button><button class="action" onclick="react('${p.id}','likes')">♡ ${fmt(p.likes)}</button></span><span><button class="iconbtn" onclick="openPost('${p.id}')" title="แก้ไขโพสต์">✎</button><button class="iconbtn" onclick="removePost('${p.id}')" title="ลบโพสต์">🗑</button></span></div></div></article>`;
@@ -101,6 +112,48 @@ function updatePhotoCounter(slider){
   const index=Math.min(slider.children.length,Math.max(1,Math.round(slider.scrollLeft/slider.clientWidth)+1));
   const counter=slider.closest('.photo-slider').querySelector('.photo-counter');
   if(counter)counter.textContent=index+' / '+slider.children.length;
+}
+
+let lightboxPhotos=[],lightboxIndex=0,lightboxPreviousFocus=null,lightboxTouchX=null;
+function openPhotoLightbox(img){
+  const gallery=img.closest('.images');
+  if(!gallery)return;
+  const photoNodes=Array.from(gallery.querySelectorAll('img'));
+  lightboxPhotos=photoNodes.map(node=>node.currentSrc||node.src);
+  lightboxIndex=Math.max(0,photoNodes.indexOf(img));
+  lightboxPreviousFocus=document.activeElement;
+  renderPhotoLightbox();
+  document.addEventListener('keydown',onLightboxKey);
+}
+function renderPhotoLightbox(){
+  const root=$('photoLightboxRoot');
+  if(!root||!lightboxPhotos.length)return;
+  const more=lightboxPhotos.length>1;
+  root.innerHTML=`<div class="photo-lightbox" role="dialog" aria-modal="true" aria-label="ดูรูปภาพขนาดเต็ม" onclick="if(event.target===this)closePhotoLightbox()" ontouchstart="lightboxTouchStart(event)" ontouchend="lightboxTouchEnd(event)"><button class="lb-close" type="button" aria-label="ปิดรูปภาพ" onclick="closePhotoLightbox()">×</button>${more?'<button type="button" class="lb-arrow lb-prev" aria-label="รูปก่อนหน้า" onclick="changeLightboxPhoto(-1)">‹</button>':''}<img src="${esc(lightboxPhotos[lightboxIndex])}" alt="ภาพขนาดเต็ม ${lightboxIndex+1}" draggable="false">${more?'<button type="button" class="lb-arrow lb-next" aria-label="รูปถัดไป" onclick="changeLightboxPhoto(1)">›</button><span class="lb-count">'+(lightboxIndex+1)+' / '+lightboxPhotos.length+'</span>':''}</div>`;
+  root.querySelector('.lb-close').focus({preventScroll:true});
+}
+function changeLightboxPhoto(step){
+  if(!lightboxPhotos.length)return;
+  lightboxIndex=(lightboxIndex+step+lightboxPhotos.length)%lightboxPhotos.length;
+  renderPhotoLightbox();
+}
+function closePhotoLightbox(){
+  $('photoLightboxRoot').innerHTML='';
+  lightboxPhotos=[];
+  document.removeEventListener('keydown',onLightboxKey);
+  if(lightboxPreviousFocus?.isConnected)lightboxPreviousFocus.focus({preventScroll:true});
+}
+function onLightboxKey(e){
+  if(e.key==='Escape'){e.preventDefault();closePhotoLightbox()}
+  else if(e.key==='ArrowLeft'){e.preventDefault();changeLightboxPhoto(-1)}
+  else if(e.key==='ArrowRight'){e.preventDefault();changeLightboxPhoto(1)}
+}
+function lightboxTouchStart(e){lightboxTouchX=e.changedTouches[0]?.screenX??null}
+function lightboxTouchEnd(e){
+  if(lightboxTouchX===null)return;
+  const delta=(e.changedTouches[0]?.screenX??lightboxTouchX)-lightboxTouchX;
+  lightboxTouchX=null;
+  if(Math.abs(delta)>50&&lightboxPhotos.length>1)changeLightboxPhoto(delta<0?1:-1);
 }
 
 function render(){document.querySelectorAll('.navbtn').forEach((x,i)=>x.classList.toggle('active',['home','profiles','profile'][i]===S.page));$('heading').textContent=({home:'หน้าแรก',profiles:'บัญชีทั้งหมด',profile:'โปรไฟล์'})[S.page];
